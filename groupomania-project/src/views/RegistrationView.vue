@@ -61,7 +61,7 @@ export default {
   },
   methods: {
     // submitForm() {
-    //   this.$axios.post('/api/users/', {
+    //   this.$axios.post('http://localhost:3000/auth/signup', {
     //     prenom: this.prenom,
     //     nom: this.nom,
     //     email: this.email,
