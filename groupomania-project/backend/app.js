@@ -1,14 +1,10 @@
 const express = require('express');
-
-const userRoutes = require('./routes/user');
-
 const app = express();
 
 const db = require("./models");
 
-db.sequelize.sync({ force: true }).then(() => {
-    console.log('Drop and Resync Db');
-});
+db.sequelize.sync();
+const userRoutes = require('./routes/user');
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
