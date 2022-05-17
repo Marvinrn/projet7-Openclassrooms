@@ -58,7 +58,6 @@
 <script>
 // @ is an alias to /src
 import NavBar from '@/components/NavBar.vue'
-
 import useVuelidate from '@vuelidate/core'
 import { required, email, minLength, sameAs } from '@vuelidate/validators'
 import { reactive, computed } from 'vue'
@@ -106,9 +105,21 @@ export default {
     submitForm() {
       this.v$.$validate()
 
-      if (this.state.signupData.password === this.state.signupData.confirmPassword && !this.v$.$error) {
-        console.log('User created');
-      }
+      // if (this.state.signupData.password === this.state.signupData.confirmPassword && !this.v$.$error) {
+      //   this.$axios.post('http://localhost:3000/auth/signup', {
+      //     signupData: {
+      //       firstName: this.firstName,
+      //       lastName: this.lastName,
+      //       email: this.email,
+      //       password: this.password
+      //     }
+      //   })
+      //     .then(response => {
+      //       console.log(response)
+      //     }).catch(error => {
+      //       console.log(error)
+      //     })
+      // }
     }
   }
 }
