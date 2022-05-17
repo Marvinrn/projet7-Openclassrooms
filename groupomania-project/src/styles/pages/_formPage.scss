@@ -76,6 +76,12 @@
         input:valid~.underline::before {
             transform: scaleX(1);
         }
+
+        .formErrorMsg {
+            color: red;
+            text-align: center;
+            font-size: 0.8em;
+        }
     }
 
     .btn-wrapper {
