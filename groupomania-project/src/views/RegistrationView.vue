@@ -62,6 +62,8 @@ import useVuelidate from '@vuelidate/core'
 import { required, email, minLength, sameAs } from '@vuelidate/validators'
 import { reactive, computed } from 'vue'
 
+import axios from 'axios';
+
 export default {
   name: 'RegistrationView',
   components: {
@@ -105,21 +107,14 @@ export default {
     submitForm() {
       this.v$.$validate()
 
-      // if (this.state.signupData.password === this.state.signupData.confirmPassword && !this.v$.$error) {
-      //   this.$axios.post('http://localhost:3000/auth/signup', {
-      //     signupData: {
-      //       firstName: this.firstName,
-      //       lastName: this.lastName,
-      //       email: this.email,
-      //       password: this.password
-      //     }
-      //   })
-      //     .then(response => {
-      //       console.log(response)
-      //     }).catch(error => {
-      //       console.log(error)
-      //     })
-      // }
+      if (this.state.signupData.password === this.state.signupData.confirmPassword && !this.v$.$error) {
+        axios.post('http://localhost:3000/auth/signup', this.state.signupData)
+          .then(response => {
+            console.log(response)
+          }).catch(error => {
+            console.log(error)
+          })
+      }
     }
   }
 }
