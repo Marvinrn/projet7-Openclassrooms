@@ -104,17 +104,11 @@ export default {
 
   methods: {
     submitForm() {
-      // if (this.signupData.password === this.signupData.confirmPassword) {
-      //   console.log('oui');
-      // } else {
-      //   console.log('non');
-      // }
       this.v$.$validate()
-      // if (!this.v$.$error) {
-      //   alert('test')
-      // } else {
-      //   alert('test2')
-      // }
+
+      if (this.state.signupData.password === this.state.signupData.confirmPassword && !this.v$.$error) {
+        console.log('User created');
+      }
     }
   }
 }
