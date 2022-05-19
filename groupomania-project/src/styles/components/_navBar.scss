@@ -15,6 +15,13 @@
     &__nav {
         font-weight: bold;
         font-size: 1.1em;
+
+        .profilePic {
+            height: 50px;
+            width: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
     }
 
     &__link {
@@ -25,5 +32,10 @@
         &:hover {
             opacity: 0.7;
         }
+    }
+
+    .profilePic {
+        height: 50px;
+        width: 50px;
     }
 }

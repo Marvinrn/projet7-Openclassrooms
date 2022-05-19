@@ -5,20 +5,12 @@
       <h1 class="form__title">Créer un compte</h1>
       <form @submit.prevent="submitForm" class="form__form">
         <div class="input-wrapper">
-          <input v-model="state.signupData.firstName" type="text" name="firstName" required />
+          <input v-model="state.signupData.userName" type="text" name="userName" required />
           <span class="underline"></span>
-          <p class="formErrorMsg" v-if="v$.signupData.firstName.$error">
+          <p class="formErrorMsg" v-if="v$.signupData.userName.$error">
             Prénom invalid !
           </p>
-          <label>Prénom</label>
-        </div>
-        <div class="input-wrapper">
-          <input v-model="state.signupData.lastName" type="text" name="lastName" required />
-          <span class="underline"></span>
-          <p class="formErrorMsg" v-if="v$.signupData.lastName.$error">
-            Nom invalide !
-          </p>
-          <label>Nom</label>
+          <label>Nom d'utilisateur</label>
         </div>
         <div class="input-wrapper">
           <input v-model="state.signupData.email" type="email" name="email" required />
@@ -73,8 +65,7 @@ export default {
   setup() {
     const state = reactive({
       signupData: {
-        firstName: '',
-        lastName: '',
+        userName: '',
         email: '',
         password: '',
         confirmPassword: ''
@@ -84,8 +75,7 @@ export default {
     const rules = computed(() => {
       return {
         signupData: {
-          firstName: { required },
-          lastName: { required },
+          userName: { required },
           email: {
             required,
             email,
@@ -109,8 +99,8 @@ export default {
 
       if (this.state.signupData.password === this.state.signupData.confirmPassword && !this.v$.$error) {
         axios.post('http://localhost:3000/auth/signup', this.state.signupData)
-          .then(response => {
-            console.log(response)
+          .then(() => {
+            window.location.href = `/home`
           }).catch(error => {
             console.log(error)
           })

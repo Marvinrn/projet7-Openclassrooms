@@ -6,7 +6,7 @@ const db = require("./models");
 db.sequelize.sync();
 // db.sequelize.sync({ force: true }).then(() => {
 //     console.log("Drop and re-sync db.");
-//   });
+// });
 const userRoutes = require('./routes/user');
 
 app.use((req, res, next) => {
