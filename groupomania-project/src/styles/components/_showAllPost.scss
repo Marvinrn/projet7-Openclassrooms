@@ -2,6 +2,76 @@
 
     .content__item {
         padding: 25px;
-        border-bottom: 1px solid black;
+        font-size: 1em;
+        border-bottom: 1px solid $color-1;
+    }
+
+    .like__section {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 10px;
+    }
+
+    .like__btn {
+        margin-right: 3px;
+        font-size: 1.5em;
+        color: gray;
+        cursor: pointer;
+        transition: 1s transform ease;
+
+        &:hover {
+            transform: scale(1.3);
+        }
+    }
+
+    .post__date {
+        opacity: 0.4;
+    }
+
+    .comments {
+        padding: 15px 15px 0 15px;
+        display: flex;
+        width: 100%;
+
+        &__comment {
+            padding: 5px;
+            padding-left: 10px;
+            background-color: rgb(207, 207, 207);
+        }
+    }
+
+    .comments__date {
+        padding-right: 15px;
+        padding-bottom: 15px;
+        display: flex;
+        justify-content: flex-end;
+        opacity: 0.4;
+    }
+
+    .reply {
+        padding: 15px;
+        display: flex;
+        width: 100%;
+
+        &__field[contenteditable=true] {
+            margin: auto;
+            width: 90%;
+            height: 100%;
+            overflow-wrap: break-word;
+            font-size: 1em;
+
+            &:focus {
+                outline: none;
+            }
+        }
+
+        &__btn {
+            padding: 15px;
+            color: white;
+            background-color: $color-1;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+        }
     }
 }
