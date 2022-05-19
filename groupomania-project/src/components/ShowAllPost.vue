@@ -14,6 +14,7 @@
                 rerum! Magni, libero. Eius, vero quis illum ea voluptatum vitae, dolor esse facilis maiores fugit eum
                 excepturi exercitationem quaerat asperiores, ipsa reiciendis! Deleniti, incidunt ratione officiis quod
                 accusamus aliquid dignissimos tenetur provident.
+                <img class="content__img" src="../assets/Groupomania_Logos+(3)/bebou.jpg" alt="random" />
                 <div class="like__section">
                     <p><i class="fa-solid fa-heart like__btn"></i>1K</p>
                     <p class="post__date">Il y a 8 jours</p>
