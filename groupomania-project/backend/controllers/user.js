@@ -13,13 +13,31 @@ exports.signup = (req, res,) => {
     console.log(req.body);
     bcrypt.hash(req.body.password, 10)
         .then(hash => {
-            User.create({
+            const user = new User({
                 userName: req.body.userName,
                 email: req.body.email,
-                password: hash
+                password: hash,
             })
-                .then(() => res.status(201).json({ message: 'Utilisateur créé' }))
-                .catch(error => res.status(400).json({ error }));
+            user.save()
+                .then(response => {
+                    if (response) {
+                        res.status(200).json({
+                            // user [object object]
+                            // user: {
+                            //     userName: user.userName,
+                            //     email: user.email,
+                            // },
+                            userName: user.userName,
+                            email: user.email,
+                            token: jwt.sign(
+                                { email: user.email },
+                                'RANDOM_TOKEN_SECRET',
+                                { expiresIn: '24h' }
+                            )
+                        })
+                    }
+                })
+                .catch(error => res.status(401).json({ error }))
         })
         .catch(error => res.status(500).json({ error }));
 };
@@ -44,9 +62,14 @@ exports.login = (req, res,) => {
                     }
                     // si comparaison est bonne, on renvoi son userId et un token d'authentification
                     res.status(200).json({
-                        userId: user.id,
+                        // user: {
+                        //     userName: user.userName,
+                        //     email: user.email
+                        // },
+                        userName: user.userName,
+                        email: user.email,
                         token: jwt.sign(
-                            { userId: user.id },
+                            { email: user.email },
                             'RANDOM_TOKEN_SECRET',
                             { expiresIn: '24h' }
                         )

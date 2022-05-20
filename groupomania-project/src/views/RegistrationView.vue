@@ -99,8 +99,12 @@ export default {
 
       if (this.state.signupData.password === this.state.signupData.confirmPassword && !this.v$.$error) {
         axios.post('http://localhost:3000/auth/signup', this.state.signupData)
-          .then(() => {
-            window.location.href = `/home`
+          .then((response) => {
+            localStorage.setItem("token", response.data.token)
+            localStorage.setItem("userName", response.data.userName)
+            localStorage.setItem("email", response.data.email)
+            console.log(response.data);
+            this.$router.push('/home');
           }).catch(error => {
             console.log(error)
           })
