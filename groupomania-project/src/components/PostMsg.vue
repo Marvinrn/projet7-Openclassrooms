@@ -3,7 +3,8 @@
         <div class="user__post">
             <div class="user--flex">
                 <img class="profile__photo" src="../assets/Groupomania_Logos+(3)/icon.png" alt="photo de profile" />
-                <h2 class="profile__name">Nom d'utilisateur</h2>
+                <!-- <h2 class="profile__name">Nom d'utilisateur</h2> -->
+                <h2 class="profile__name">{{ $store.state.user.userName }}</h2>
             </div>
             <div class="post">
                 <span class="post__content" contenteditable="true" placeholder="Quoi de neuf ?">
@@ -22,6 +23,7 @@
 </template>
 
 <script>
+// import { mapState } from 'vuex';
 export default {
     name: 'postMsg',
 
@@ -30,13 +32,16 @@ export default {
             file: ""
         };
     },
+    // computed: {
+    //     ...mapState(['user'])
+    // },
     methods: {
         includeImg(e) {
             let files = e.target.files || e.dataTransfer.files;
             if (!files.length)
                 return;
             this.file = URL.createObjectURL(files[0]);
-        }
+        },
     }
 }
 </script>

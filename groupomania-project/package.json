@@ -15,6 +15,7 @@
     "sass": "^1.51.0",
     "sass-loader": "^12.6.0",
     "vue": "^3.2.13",
+    "vue-jwt-decode": "^0.1.0",
     "vue-router": "^4.0.15",
     "vuex": "^4.0.2"
   },

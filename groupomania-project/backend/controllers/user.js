@@ -22,13 +22,10 @@ exports.signup = (req, res,) => {
                 .then(response => {
                     if (response) {
                         res.status(200).json({
-                            // user [object object]
-                            // user: {
-                            //     userName: user.userName,
-                            //     email: user.email,
-                            // },
-                            userName: user.userName,
-                            email: user.email,
+                            user: {
+                                userName: user.userName,
+                                email: user.email,
+                            },
                             token: jwt.sign(
                                 { email: user.email },
                                 'RANDOM_TOKEN_SECRET',
@@ -62,12 +59,10 @@ exports.login = (req, res,) => {
                     }
                     // si comparaison est bonne, on renvoi son userId et un token d'authentification
                     res.status(200).json({
-                        // user: {
-                        //     userName: user.userName,
-                        //     email: user.email
-                        // },
-                        userName: user.userName,
-                        email: user.email,
+                        user: {
+                            userName: user.userName,
+                            email: user.email
+                        },
                         token: jwt.sign(
                             { email: user.email },
                             'RANDOM_TOKEN_SECRET',

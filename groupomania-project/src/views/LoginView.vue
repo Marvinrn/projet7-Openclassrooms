@@ -28,6 +28,7 @@
 <script>
 // @ is an alias to /src
 import NavBar from '@/components/NavBar.vue'
+import axios from 'axios'
 
 export default {
   name: 'LoginView',
@@ -42,7 +43,18 @@ export default {
   },
   methods: {
     submitForm() {
-      alert('ouais ouais ouais')
+      axios.post('http://localhost:3000/auth/login', {
+        email: this.email,
+        password: this.password
+      })
+        .then((response) => {
+          localStorage.setItem("token", response.data.token)
+          localStorage.setItem('user', JSON.stringify(response.data.user))
+          console.log(response.data);
+          this.$router.push('/home');
+        }).catch(error => {
+          console.log(error)
+        })
     }
   }
 }

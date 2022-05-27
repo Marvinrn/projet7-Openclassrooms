@@ -101,8 +101,7 @@ export default {
         axios.post('http://localhost:3000/auth/signup', this.state.signupData)
           .then((response) => {
             localStorage.setItem("token", response.data.token)
-            localStorage.setItem("userName", response.data.userName)
-            localStorage.setItem("email", response.data.email)
+            localStorage.setItem('user', JSON.stringify(response.data.user))
             console.log(response.data);
             this.$router.push('/home');
           }).catch(error => {
