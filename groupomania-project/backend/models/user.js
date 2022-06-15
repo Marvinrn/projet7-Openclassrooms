@@ -1,18 +1,16 @@
-module.exports = (sequelize, DataTypes) => {
-    const User = sequelize.define("User", {
-        userName: {
-            type: DataTypes.STRING,
-        },
-        email: {
-            type: DataTypes.STRING,
-            unique: true,
-        },
-        password: {
-            type: DataTypes.STRING,
-        }
-    },
-        {
-            timestamps: false
-        });
-    return User;
-};
+const mongoose = require('mongoose');
+
+//instalation du package mongoose-unique-validator pour réduire les erreurs de mongodb
+const uniqueValidator = require('mongoose-unique-validator')
+
+// creation de notre schema pour les users avec la fonction schema de mongoose
+const userSchema = mongoose.Schema({
+    username: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true }
+});
+
+// permet de pas avoir plusieurs utilisateur avec la même adresse mail
+userSchema.plugin(uniqueValidator);
+
+module.exports = mongoose.model('User', userSchema);

@@ -1,12 +1,18 @@
 const express = require('express');
+const mongoose = require('mongoose');
+require('dotenv').config();
+
+
+mongoose.connect(process.env.MONGO_URL,
+    {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    })
+    .then(() => console.log('Connexion à MongoDB réussie !'))
+    .catch(() => console.log('Connexion à MongoDB échouée !'));
+
 const app = express();
 
-const db = require("./models");
-
-db.sequelize.sync();
-// db.sequelize.sync({ force: true }).then(() => {
-//     console.log("Drop and re-sync db.");
-// });
 const userRoutes = require('./routes/user');
 
 app.use((req, res, next) => {
@@ -18,6 +24,6 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
-app.use('/auth', userRoutes);
+app.use('/api/auth', userRoutes);
 
 module.exports = app;

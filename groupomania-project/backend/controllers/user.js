@@ -2,10 +2,10 @@
 const bcrypt = require('bcrypt');
 //installation du package jsonwebtoken pour creer des tokens et de les vérifier
 const jwt = require('jsonwebtoken');
-const db = require("../models");
-// const models = require('../models')
-const User = db.users;
 
+const User = require('../models/user')
+
+require('dotenv').config();
 
 
 exports.signup = (req, res,) => {
@@ -14,7 +14,7 @@ exports.signup = (req, res,) => {
     bcrypt.hash(req.body.password, 10)
         .then(hash => {
             const user = new User({
-                userName: req.body.userName,
+                username: req.body.username,
                 email: req.body.email,
                 password: hash,
             })
@@ -23,12 +23,13 @@ exports.signup = (req, res,) => {
                     if (response) {
                         res.status(200).json({
                             user: {
-                                userName: user.userName,
+                                username: user.username,
                                 email: user.email,
                             },
+                            userId: user.id,
                             token: jwt.sign(
                                 { email: user.email },
-                                'RANDOM_TOKEN_SECRET',
+                                process.env.MY_TOKEN,
                                 { expiresIn: '24h' }
                             )
                         })
@@ -60,12 +61,13 @@ exports.login = (req, res,) => {
                     // si comparaison est bonne, on renvoi son userId et un token d'authentification
                     res.status(200).json({
                         user: {
-                            userName: user.userName,
+                            username: user.username,
                             email: user.email
                         },
+                        userId: user.id,
                         token: jwt.sign(
                             { email: user.email },
-                            'RANDOM_TOKEN_SECRET',
+                            process.env.MY_TOKEN,
                             { expiresIn: '24h' }
                         )
                     });

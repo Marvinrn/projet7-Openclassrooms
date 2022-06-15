@@ -43,14 +43,12 @@ export default {
   },
   methods: {
     submitForm() {
-      axios.post('http://localhost:3000/auth/login', {
+      axios.post('http://localhost:3000/api/auth/login', {
         email: this.email,
         password: this.password
       })
         .then((response) => {
-          localStorage.setItem("token", response.data.token)
-          localStorage.setItem('user', JSON.stringify(response.data.user))
-          console.log(response.data);
+          this.$store.commit('login', response.data)
           this.$router.push('/home');
         }).catch(error => {
           console.log(error)

@@ -5,9 +5,9 @@
       <h1 class="form__title">Créer un compte</h1>
       <form @submit.prevent="submitForm" class="form__form">
         <div class="input-wrapper">
-          <input v-model="state.signupData.userName" type="text" name="userName" required />
+          <input v-model="state.signupData.username" type="text" name="username" required />
           <span class="underline"></span>
-          <p class="formErrorMsg" v-if="v$.signupData.userName.$error">
+          <p class="formErrorMsg" v-if="v$.signupData.username.$error">
             Prénom invalid !
           </p>
           <label>Nom d'utilisateur</label>
@@ -65,7 +65,7 @@ export default {
   setup() {
     const state = reactive({
       signupData: {
-        userName: '',
+        username: '',
         email: '',
         password: '',
         confirmPassword: ''
@@ -75,7 +75,7 @@ export default {
     const rules = computed(() => {
       return {
         signupData: {
-          userName: { required },
+          username: { required },
           email: {
             required,
             email,
@@ -98,11 +98,9 @@ export default {
       this.v$.$validate()
 
       if (this.state.signupData.password === this.state.signupData.confirmPassword && !this.v$.$error) {
-        axios.post('http://localhost:3000/auth/signup', this.state.signupData)
+        axios.post('http://localhost:3000/api/auth/signup', this.state.signupData)
           .then((response) => {
-            localStorage.setItem("token", response.data.token)
-            localStorage.setItem('user', JSON.stringify(response.data.user))
-            console.log(response.data);
+            this.$store.commit('login', response.data)
             this.$router.push('/home');
           }).catch(error => {
             console.log(error)
