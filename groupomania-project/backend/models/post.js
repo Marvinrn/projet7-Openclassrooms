@@ -1,26 +1,13 @@
-module.exports = (sequelize, DataTypes) => {
-    const Post = sequelize.define("Post", {
-        userId: {
-            type: DataTypes.STRING,
-        },
-        title: {
-            type: DataTypes.STRING,
-            unique: true,
-        },
-        content: {
-            type: DataTypes.STRING,
-        },
-        likes: {
-            type: DataTypes.NUMBER,
-            defaultValue: 0
-        },
-        dislikes: {
-            type: DataTypes.NUMBER,
-            defaultValue: 0
-        },
-    },
-        {
-            timestamps: false
-        });
-    return Post;
-};
+const mongoose = require('mongoose');
+
+// creation de notre schema pour les sauces avec la fonction schema de mongoose
+const postSchema = mongoose.Schema({
+    userId: { type: String, required: true },
+    content: { type: String, required: true },
+    imageUrl: { type: String },
+    likes: { type: Number, default: 0 },
+    usersLiked: { type: [String] },
+    usersDisliked: { type: [String] },
+});
+
+module.exports = mongoose.model('Post', postSchema);

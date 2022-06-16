@@ -5,14 +5,6 @@
       <h1 class="form__title">Créer un compte</h1>
       <form @submit.prevent="submitForm" class="form__form">
         <div class="input-wrapper">
-          <input v-model="state.signupData.username" type="text" name="username" required />
-          <span class="underline"></span>
-          <p class="formErrorMsg" v-if="v$.signupData.username.$error">
-            Prénom invalid !
-          </p>
-          <label>Nom d'utilisateur</label>
-        </div>
-        <div class="input-wrapper">
           <input v-model="state.signupData.email" type="email" name="email" required />
           <span class="underline"></span>
           <p class="formErrorMsg" v-if="v$.signupData.email.$error">
@@ -65,7 +57,6 @@ export default {
   setup() {
     const state = reactive({
       signupData: {
-        username: '',
         email: '',
         password: '',
         confirmPassword: ''
@@ -75,7 +66,6 @@ export default {
     const rules = computed(() => {
       return {
         signupData: {
-          username: { required },
           email: {
             required,
             email,

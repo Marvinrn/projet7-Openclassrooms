@@ -14,7 +14,6 @@ exports.signup = (req, res,) => {
     bcrypt.hash(req.body.password, 10)
         .then(hash => {
             const user = new User({
-                username: req.body.username,
                 email: req.body.email,
                 password: hash,
             })
@@ -23,7 +22,6 @@ exports.signup = (req, res,) => {
                     if (response) {
                         res.status(200).json({
                             user: {
-                                username: user.username,
                                 email: user.email,
                             },
                             userId: user.id,
@@ -61,7 +59,6 @@ exports.login = (req, res,) => {
                     // si comparaison est bonne, on renvoi son userId et un token d'authentification
                     res.status(200).json({
                         user: {
-                            username: user.username,
                             email: user.email
                         },
                         userId: user.id,

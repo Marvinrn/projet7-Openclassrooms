@@ -4,7 +4,7 @@
             <div class="user--flex">
                 <img class="profile__photo" src="../assets/Groupomania_Logos+(3)/icon.png" alt="photo de profile" />
                 <!-- <h2 class="profile__name">Nom d'utilisateur</h2> -->
-                <h2 class="profile__name">{{ $store.getters.getUsername }}</h2>
+                <h2 class="profile__name">{{ $store.getters.getEmail }}</h2>
             </div>
             <div class="post">
                 <span class="post__content" contenteditable="true" placeholder="Quoi de neuf ?">

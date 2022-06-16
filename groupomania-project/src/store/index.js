@@ -13,9 +13,9 @@ const store = createStore({
       }
       return false
     },
-    getUsername: function (state) {
-      if (state.user.username) {
-        return state.user.username
+    getEmail: function (state) {
+      if (state.user.email) {
+        return state.user.email
       }
       return
     },
