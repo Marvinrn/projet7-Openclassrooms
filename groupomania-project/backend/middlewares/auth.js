@@ -8,7 +8,7 @@ module.exports = (req, res, next) => {
         const decodedToken = jwt.verify(token, process.env.MY_TOKEN);
         // on recupère le userId lié au token 
         const userId = decodedToken.userId;
-        req.auth = { userId };
+        req.auth = userId;
         // on verifie que si dans la requête le userId correspond bien à celui du token
         if (req.body.userId && req.body.userId !== userId) {
             // si different on renvoit une erreur

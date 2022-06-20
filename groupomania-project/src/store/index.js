@@ -24,6 +24,9 @@ const store = createStore({
         return state.token
       }
       return
+    },
+    isAdmin: function (state) {
+      return state.user.isAdmin
     }
   },
   mutations: {

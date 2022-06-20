@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors')
 
 const path = require('path')
 
@@ -14,7 +15,8 @@ mongoose.connect(process.env.MONGO_URL,
         useNewUrlParser: true,
         useUnifiedTopology: true
     })
-    .then(() => console.log('Connexion à MongoDB réussie !'))
+    .then(() =>
+        console.log('Connexion à MongoDB réussie !'))
     .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 const app = express();
@@ -25,6 +27,11 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
     next();
 });
+
+app.use(cors({
+    origin: ['http://localhost:8080']
+}));
+
 
 app.use(express.json());
 app.use('/images', express.static(path.join(__dirname, 'images')));

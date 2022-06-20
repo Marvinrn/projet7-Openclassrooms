@@ -6,7 +6,8 @@ const uniqueValidator = require('mongoose-unique-validator')
 // creation de notre schema pour les users avec la fonction schema de mongoose
 const userSchema = mongoose.Schema({
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true }
+    password: { type: String, required: true },
+    isAdmin: { type: Boolean, default: false }
 });
 
 // permet de pas avoir plusieurs utilisateur avec la même adresse mail

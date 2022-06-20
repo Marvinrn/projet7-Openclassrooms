@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 
 const User = require('../models/user')
 
+
 require('dotenv').config();
 
 
@@ -23,15 +24,17 @@ exports.signup = (req, res,) => {
                         res.status(200).json({
                             user: {
                                 email: user.email,
+                                isAdmin: user.isAdmin
                             },
                             userId: user.id,
                             token: jwt.sign(
-                                { email: user.email },
+                                { userId: user.id },
                                 process.env.MY_TOKEN,
                                 { expiresIn: '24h' }
                             )
                         })
                     }
+
                 })
                 .catch(error => res.status(401).json({ error }))
         })
@@ -59,11 +62,12 @@ exports.login = (req, res,) => {
                     // si comparaison est bonne, on renvoi son userId et un token d'authentification
                     res.status(200).json({
                         user: {
-                            email: user.email
+                            email: user.email,
+                            isAdmin: user.isAdmin
                         },
                         userId: user.id,
                         token: jwt.sign(
-                            { email: user.email },
+                            { userId: user.id },
                             process.env.MY_TOKEN,
                             { expiresIn: '24h' }
                         )

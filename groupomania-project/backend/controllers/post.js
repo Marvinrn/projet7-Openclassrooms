@@ -1,11 +1,14 @@
 const Post = require('../models/post')
-const fs = require('fs')
+const fs = require('fs');
+const User = require('../models/user');
 
 exports.createPost = (req, res) => {
-    const postObject = JSON.parse(req.body.post)
+    console.log(req.body);
+    const postObject = req.body
     const post = new Post({
+        userId: req.auth,
         ...postObject,
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+        // imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
         usersLiked: [],
         usersDisliked: []
     })
@@ -48,7 +51,28 @@ exports.deletePost = (req, res) => {
 
 exports.getPost = (req, res,) => {
     Post.find()
-        .then(sauces => res.status(200).json(sauces))
+        .then(async posts => {
+            let userEmails = {}
+            let dataToSend = []
+            for (let i = 0; i < posts.length; i++) {
+                if (userEmails[posts[i].userId]) {
+                    dataToSend.push({
+                        userId: posts[i].userId,
+                        content: posts[i].content,
+                        email: userEmails[posts[i].userId]
+                    })
+                } else {
+                    let user = await User.findOne({ userId: posts[i].userId })
+                    userEmails[posts[i].userId] = user.email
+                    dataToSend.push({
+                        userId: posts[i].userId,
+                        content: posts[i].content,
+                        email: userEmails[posts[i].userId]
+                    })
+                }
+            }
+            res.status(200).json(dataToSend)
+        })
         .catch(error => res.status(400).json({ error }));
 };
 
