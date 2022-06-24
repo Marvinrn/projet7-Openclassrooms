@@ -1,7 +1,8 @@
 .user__post {
 
     .content__item {
-        padding: 25px;
+        padding-left: 25px;
+        padding-bottom: 10px;
         font-size: 0.9em;
         border-bottom: 1px solid $color-1;
 
@@ -10,24 +11,6 @@
             width: 100%;
             height: 500px;
             object-fit: contain;
-        }
-    }
-
-    .like__section {
-        display: flex;
-        justify-content: space-between;
-        padding-top: 10px;
-    }
-
-    .like__btn {
-        margin-right: 3px;
-        font-size: 1.5em;
-        color: gray;
-        cursor: pointer;
-        transition: 1s transform ease;
-
-        &:hover {
-            transform: scale(1.3);
         }
     }
 
@@ -80,6 +63,25 @@
             border-radius: 10px;
             border: none;
             cursor: pointer;
+        }
+    }
+
+    .like__section {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 10px;
+        padding-left: 25px;
+    }
+
+    .like__btn {
+        margin-right: 3px;
+        font-size: 1.5em;
+        color: gray;
+        cursor: pointer;
+        transition: 1s transform ease;
+
+        &:hover {
+            transform: scale(1.3);
         }
     }
 }

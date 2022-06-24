@@ -17,13 +17,13 @@ const store = createStore({
       if (state.user.email) {
         return state.user.email
       }
-      return
+      // return
     },
     getToken: function (state) {
       if (state.token) {
         return state.token
       }
-      return
+      // return
     },
     isAdmin: function (state) {
       return state.user.isAdmin
