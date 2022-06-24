@@ -29,27 +29,30 @@ exports.updatePost = (req, res) => {
 }
 
 exports.deletePost = (req, res) => {
-    Post.findOne({ _id: req.params.id })
-        .then(post => {
-            if (!post) {
-                return res.status(404).json({ message: 'Objet non trouvé' })
-            }
-            if (post.userId !== req.auth.userId) {
-                return res.status(401).json({ message: 'Requête non autorisée' })
-            }
-            // const filename = post.imageUrl.split('/images/')[1];
-            // avec fs.unlink, on supprime le fichier
-            // fs.unlink(`images/${filename}`, () => {
-            //suppression de l'objet dans la base de donnée une fois que le fichier a été supprimé
-            // Post.deleteOne({ _id: req.params.id })
-            //     .then(() => res.status(200).json({ message: 'Objet supprimé !' }))
-            //     .catch(error => res.status(400).json({ error }));
-            // })
-            Post.deleteOne({ _id: req.params.id })
-                .then(() => res.status(200).json({ message: 'Objet supprimé !' }))
-                .catch(error => res.status(400).json({ error }));
-        })
-        .catch(error => res.status(500).json({ error }));
+    Post.findById(req.params.id, function (error, post) {
+        if (error) {
+            return res.status(500).json({ error })
+        }
+        if (!post) {
+            return res.status(404).json({ message: 'Objet non trouvé' })
+        }
+        console.log(req.auth);
+        console.log(post.userId);
+        if (post.userId !== req.auth) {
+            return res.status(401).json({ message: 'Requête non autorisée' })
+        }
+        // const filename = post.imageUrl.split('/images/')[1];
+        // avec fs.unlink, on supprime le fichier
+        // fs.unlink(`images/${filename}`, () => {
+        //suppression de l'objet dans la base de donnée une fois que le fichier a été supprimé
+        // Post.deleteOne({ _id: req.params.id })
+        //     .then(() => res.status(200).json({ message: 'Objet supprimé !' }))
+        //     .catch(error => res.status(400).json({ error }));
+        // })
+        Post.deleteOne({ _id: req.params.id })
+            .then(() => res.status(200).json({ message: 'Objet supprimé !' }))
+            .catch(error => res.status(400).json({ error }));
+    })
 }
 
 exports.getPost = (req, res,) => {
@@ -60,21 +63,30 @@ exports.getPost = (req, res,) => {
             for (let i = 0; i < posts.length; i++) {
                 if (userEmails[posts[i].userId]) {
                     dataToSend.push({
+                        _id: posts[i]._id,
                         userId: posts[i].userId,
                         content: posts[i].content,
                         email: userEmails[posts[i].userId]
                     })
+                    if (i == posts.length - 1) {
+                        res.status(200).json(dataToSend)
+                    }
                 } else {
-                    let user = await User.findOne({ userId: posts[i].userId })
-                    userEmails[posts[i].userId] = user.email
-                    dataToSend.push({
-                        userId: posts[i].userId,
-                        content: posts[i].content,
-                        email: userEmails[posts[i].userId]
+                    // let user = await User.findById(posts[i].userId)
+                    User.findById(posts[i].userId, function (error, user) {
+                        userEmails[posts[i].userId] = user.email
+                        dataToSend.push({
+                            _id: posts[i]._id,
+                            userId: posts[i].userId,
+                            content: posts[i].content,
+                            email: userEmails[posts[i].userId]
+                        })
+                        if (i == posts.length - 1) {
+                            res.status(200).json(dataToSend)
+                        }
                     })
                 }
             }
-            res.status(200).json(dataToSend)
         })
         .catch(error => res.status(400).json({ error }));
 };

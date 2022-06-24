@@ -11,7 +11,7 @@
             </div>
             <div class="like__section">
                 <p><i class="fa-solid fa-heart like__btn"></i>1K</p>
-                <button v-on:click="deletePost(post.id)">supprimer</button>
+                <button v-on:click="deletePost(post._id)">supprimer</button>
             </div>
             <!-- <div class="comments ">
                     <img class="profile__photo" src="../assets/Groupomania_Logos+(3)/icon.png" alt="photo de profile" />
@@ -55,7 +55,7 @@ export default {
                 .catch(error => { console.log(error) })
         },
         deletePost(id) {
-            axios.delete('http://localhost:3000/api/post/:' + id, {
+            axios.delete('http://localhost:3000/api/post/' + id, {
                 headers: { 'Authorization': `Bearer ${this.$store.getters.getToken}` }
             })
                 .then((res) => {

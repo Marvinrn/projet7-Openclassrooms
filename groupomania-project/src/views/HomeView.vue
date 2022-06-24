@@ -9,10 +9,11 @@
                     <h2 class="profile__name">{{ $store.getters.getEmail }}</h2>
                 </div>
                 <div class="post">
-                    <span class="post__content" contenteditable="true" placeholder="Quoi de neuf ?">
-                        <img :src="file" v-if="file" />
-                    </span>
-                    <input placeholder="Quoi de neuf ?" v-model="postData.content" type="text" name="content" />
+                    <!-- <span class="post__content" contenteditable="true" placeholder="Quoi de neuf ?">
+                        </span> -->
+                    <img :src="file" v-if="file" />
+                    <textarea class="post__content" placeholder="Quoi de neuf ?" v-model="postData.content" type="text"
+                        name="content" />
                 </div>
                 <div class="post__btns">
                     <input type="file" name="file" id="file" class="hiddenInput" @change="includeImg" />

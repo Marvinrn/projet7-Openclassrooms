@@ -44,7 +44,7 @@ exports.signup = (req, res,) => {
 
 exports.login = (req, res,) => {
     //on récupère le user dans la base correspondant au mail entré
-    User.findOne({ where: { email: req.body.email } })
+    User.findOne({ email: req.body.email })
         .then(user => {
             //renvoie une erreur si le user n'est pas bon
             if (!user) {
