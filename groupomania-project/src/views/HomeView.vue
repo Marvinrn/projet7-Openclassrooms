@@ -11,9 +11,9 @@
                 <div class="post">
                     <!-- <span class="post__content" contenteditable="true" placeholder="Quoi de neuf ?">
                         </span> -->
-                    <img :src="file" v-if="file" />
                     <textarea class="post__content" placeholder="Quoi de neuf ?" v-model="postData.content" type="text"
                         name="content" />
+                    <img class="post__img" :src="postData.file" v-if="postData.file" />
                 </div>
                 <div class="post__btns">
                     <input type="file" name="file" id="file" class="hiddenInput" @change="includeImg" />
@@ -24,7 +24,7 @@
                 </div>
             </form>
         </div>
-        <ShowAllPost />
+        <ShowAllPost v-for="post in Posts" :post="post" @deletePost="deletePost" :key="post._id" />
     </div>
 </template>
 
@@ -44,10 +44,11 @@ export default {
     },
     data: function () {
         return {
-            file: "",
             postData: {
-                content: ""
-            }
+                content: "",
+                file: "",
+            },
+            Posts: []
         };
     },
     methods: {
@@ -55,15 +56,42 @@ export default {
             let files = e.target.files || e.dataTransfer.files;
             if (!files.length)
                 return;
-            this.file = URL.createObjectURL(files[0]);
+            this.postData.file = URL.createObjectURL(files[0]);
         },
-        submitPost() {
-            axios.post('http://localhost:3000/api/post', this.postData, {
+        getPosts() {
+            // console.log(this.$store.getters.getToken);
+            axios.get('http://localhost:3000/api/post', {
                 headers: { 'Authorization': `Bearer ${this.$store.getters.getToken}` }
             })
-                .then(res => { this.postData = res.data })
+                .then(res => { this.Posts = res.data })
+                .catch(error => { console.log(error) })
+        },
+        submitPost() {
+            if (this.postData.content.trim() === "") return
+            let formData = new FormData()
+            formData.append("content", this.postData.content)
+            if (this.postData.file !== "") {
+                formData.append("images", this.postData.file)
+            }
+            axios.post('http://localhost:3000/api/post', formData, {
+                headers: { 'Authorization': `Bearer ${this.$store.getters.getToken}` }
+            })
+                .then(res => { this.Posts.push(res.data) })
+                .catch(error => { console.log(error) })
+        },
+        deletePost(id) {
+            axios.delete('http://localhost:3000/api/post/' + id, {
+                headers: { 'Authorization': `Bearer ${this.$store.getters.getToken}` }
+            })
+                .then((res) => {
+                    console.log(res)
+                    this.getPosts()
+                })
                 .catch(error => { console.log(error) })
         }
+    },
+    mounted() {
+        this.getPosts()
     }
 }
 </script>

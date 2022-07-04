@@ -1,5 +1,5 @@
 <template>
-    <div class="content" v-for="post in Posts" :key="post.content">
+    <div class="content">
         <div class="user__post">
             <div class="user--flex">
                 <img class="profile__photo" src="../assets/Groupomania_Logos+(3)/icon.png" alt="photo de profile" />
@@ -7,11 +7,13 @@
             </div>
             <div class="content__item">
                 {{ post.content }}
-                <!-- <img class="content__img" src="" alt="" /> -->
+                <img v-if="post.imageUrl" class="content__img" :src="post.imageUrl" alt="" />
             </div>
             <div class="like__section">
-                <p><i class="fa-solid fa-heart like__btn"></i>1K</p>
-                <button v-on:click="deletePost(post._id)">supprimer</button>
+                <p><i class="fa-solid fa-heart like__btn"></i>{{ post.likes }}</p>
+                <!-- if is admin or userId === post.userId then show button else hide button-->
+                <button v-if="$store.getters.getEmail === post.email || $store.getters.isAdmin" class="btnIsVisible"
+                    v-on:click="deletePost(post._id)">supprimer</button>
             </div>
             <!-- <div class="comments ">
                     <img class="profile__photo" src="../assets/Groupomania_Logos+(3)/icon.png" alt="photo de profile" />
@@ -34,40 +36,13 @@
 
 <script>
 
-import axios from 'axios';
-
-
 export default {
     name: 'ShowContent',
-    data() {
-        return {
-            // pour afficher les élément dans l'odre inverse 
-            Posts: [].reverse,
-        }
-    },
+    props: ["post"],
     methods: {
-        getPosts() {
-            // console.log(this.$store.getters.getToken);
-            axios.get('http://localhost:3000/api/post', {
-                headers: { 'Authorization': `Bearer ${this.$store.getters.getToken}` }
-            })
-                .then(res => { this.Posts = res.data.reverse() })
-                .catch(error => { console.log(error) })
-        },
         deletePost(id) {
-            axios.delete('http://localhost:3000/api/post/' + id, {
-                headers: { 'Authorization': `Bearer ${this.$store.getters.getToken}` }
-            })
-                .then((res) => {
-                    console.log(res)
-                    this.getPosts
-                })
-                .catch(error => { console.log(error) })
-
+            this.$emit("deletePost", id)
         }
-    },
-    mounted() {
-        this.getPosts()
     }
 }
 </script>

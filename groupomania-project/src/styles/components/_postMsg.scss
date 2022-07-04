@@ -31,20 +31,33 @@
     }
 
     .post {
-        padding: 15px;
+        padding: 15px 15px 0 15px;
         width: 100%;
         height: 100%;
         display: flex;
         border-bottom: 1px solid black;
+        display: flex;
+        flex-direction: column;
 
-        &__content[contenteditable=true] {
+        &__content {
             overflow-wrap: break-word;
-            font-size: 1em;
+            font-size: 1.2em;
+            height: 50px;
             width: 100%;
+            border: none;
+            resize: none;
 
             &:focus {
                 outline: none;
             }
+        }
+
+        &__img {
+            margin-top: 15px;
+            margin-bottom: 15px;
+            width: 100%;
+            height: 500px;
+            object-fit: contain;
         }
 
     }
@@ -60,6 +73,10 @@
         justify-content: flex-end;
         padding: 5px;
         margin-top: 10px;
+
+        .hiddenInput {
+            display: none;
+        }
 
         .publish__btn {
             margin-left: 10px;

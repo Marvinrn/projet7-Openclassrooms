@@ -1,20 +1,26 @@
-const Post = require('../models/post')
+const Post = require('../models/post');
 // const fs = require('fs');
 const User = require('../models/user');
 
 exports.createPost = (req, res) => {
-    console.log(req.body);
     const postObject = req.body
-    const post = new Post({
-        userId: req.auth,
-        ...postObject,
-        // imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-        usersLiked: [],
-        usersDisliked: []
+    console.log(req.file);
+    postObject.content = postObject.content.trim()
+    User.findById(req.auth, function (error, user) {
+        const post = new Post({
+            userId: req.auth,
+            email: user.email,
+            ...postObject,
+            usersLiked: [],
+            usersDisliked: []
+        })
+        if (req.file) {
+            post.imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        }
+        post.save()
+            .then(() => res.status(201).json(post))
+            .catch(error => res.status(400).json({ error }));
     })
-    post.save()
-        .then(() => res.status(201).json({ message: 'Objet enregistré' }))
-        .catch(error => res.status(400).json({ error }));
 }
 
 exports.updatePost = (req, res) => {
@@ -36,8 +42,6 @@ exports.deletePost = (req, res) => {
         if (!post) {
             return res.status(404).json({ message: 'Objet non trouvé' })
         }
-        console.log(req.auth);
-        console.log(post.userId);
         if (post.userId !== req.auth) {
             return res.status(401).json({ message: 'Requête non autorisée' })
         }
@@ -58,35 +62,7 @@ exports.deletePost = (req, res) => {
 exports.getPost = (req, res,) => {
     Post.find()
         .then(async posts => {
-            let userEmails = {}
-            let dataToSend = []
-            for (let i = 0; i < posts.length; i++) {
-                if (userEmails[posts[i].userId]) {
-                    dataToSend.push({
-                        _id: posts[i]._id,
-                        userId: posts[i].userId,
-                        content: posts[i].content,
-                        email: userEmails[posts[i].userId]
-                    })
-                    if (i == posts.length - 1) {
-                        res.status(200).json(dataToSend)
-                    }
-                } else {
-                    // let user = await User.findById(posts[i].userId)
-                    User.findById(posts[i].userId, function (error, user) {
-                        userEmails[posts[i].userId] = user.email
-                        dataToSend.push({
-                            _id: posts[i]._id,
-                            userId: posts[i].userId,
-                            content: posts[i].content,
-                            email: userEmails[posts[i].userId]
-                        })
-                        if (i == posts.length - 1) {
-                            res.status(200).json(dataToSend)
-                        }
-                    })
-                }
-            }
+            res.status(200).json(posts)
         })
         .catch(error => res.status(400).json({ error }));
 };
