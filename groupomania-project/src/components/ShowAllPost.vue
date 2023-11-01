@@ -7,7 +7,7 @@
             </div>
             <div class="content__item">
                 {{ post.content }}
-                <img v-if="post.imageUrl" class="content__img" :src="post.imageUrl" alt="" />
+                <img v-if="post.imageUrl" class="content__img" :src="post.imageUrl" alt="image" />
             </div>
             <div class="like__section">
                 <p><i class="fa-solid fa-heart like__btn"></i>{{ post.likes }}</p>

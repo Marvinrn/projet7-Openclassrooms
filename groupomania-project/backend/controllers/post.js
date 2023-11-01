@@ -1,5 +1,5 @@
 const Post = require('../models/post');
-// const fs = require('fs');
+const fs = require('fs');
 const User = require('../models/user');
 
 exports.createPost = (req, res) => {
@@ -45,17 +45,20 @@ exports.deletePost = (req, res) => {
         if (post.userId !== req.auth) {
             return res.status(401).json({ message: 'Requête non autorisée' })
         }
-        // const filename = post.imageUrl.split('/images/')[1];
-        // avec fs.unlink, on supprime le fichier
-        // fs.unlink(`images/${filename}`, () => {
-        //suppression de l'objet dans la base de donnée une fois que le fichier a été supprimé
-        // Post.deleteOne({ _id: req.params.id })
-        //     .then(() => res.status(200).json({ message: 'Objet supprimé !' }))
-        //     .catch(error => res.status(400).json({ error }));
-        // })
-        Post.deleteOne({ _id: req.params.id })
-            .then(() => res.status(200).json({ message: 'Objet supprimé !' }))
-            .catch(error => res.status(400).json({ error }));
+        if (req.file) {
+            const filename = post.imageUrl.split('/images/')[1];
+            // avec fs.unlink, on supprime le fichier
+            fs.unlink(`images/${filename}`, () => {
+                //suppression de l'objet dans la base de donnée une fois que le fichier a été supprimé
+                Post.deleteOne({ _id: req.params.id })
+                    .then(() => res.status(200).json({ message: 'Objet supprimé !' }))
+                    .catch(error => res.status(400).json({ error }));
+            })
+        } else {
+            Post.deleteOne({ _id: req.params.id })
+                .then(() => res.status(200).json({ message: 'Objet supprimé !' }))
+                .catch(error => res.status(400).json({ error }));
+        }
     })
 }
 
